@@ -1,0 +1,27 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Replace with YOUR email(s). Only these accounts can edit anything.
+    function isAdmin() {
+      return request.auth != null
+          && request.auth.token.email in ['YOUR_ADMIN_EMAIL@example.com'];
+    }
+
+    // Public content: anyone can read, only you can write.
+    match /site/{id}          { allow read: if true; allow write: if isAdmin(); }
+    match /announcements/{id} { allow read: if true; allow write: if isAdmin(); }
+    match /events/{id}        { allow read: if true; allow write: if isAdmin(); }
+    match /files/{id}         { allow read: if true; allow write: if isAdmin(); }
+
+    // Visit requests: anyone can send one (size-limited), only you can read them.
+    match /requests/{id} {
+      allow create: if request.resource.data.keys().hasOnly(['name', 'phone', 'stage', 'message', 'created'])
+                    && request.resource.data.name is string  && request.resource.data.name.size()  < 200
+                    && request.resource.data.phone is string && request.resource.data.phone.size() < 50
+                    && request.resource.data.stage is string && request.resource.data.stage.size() < 100
+                    && request.resource.data.message is string && request.resource.data.message.size() < 2000;
+      allow read, update, delete: if isAdmin();
+    }
+  }
+}

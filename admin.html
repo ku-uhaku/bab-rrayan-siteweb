@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Bab Rrayan — Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Hanken+Grotesk:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Noto+Kufi+Arabic:wght@500..800&family=Reem+Kufi:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body class="adm">
+
+<header class="adm-head">
+  <div class="wrap adm-bar">
+    <a href="index.html" class="logo" aria-label="View the site">
+      <svg viewBox="0 0 40 48" width="26" height="31" aria-hidden="true">
+        <path d="M2 48V20a18 18 0 0 1 36 0v28z" fill="currentColor"/>
+        <path d="M9 48V20a11 11 0 0 1 22 0v28z" fill="var(--logo-in)"/>
+        <path d="M15 48V20a5 5 0 0 1 10 0v28z" fill="var(--saffron)"/>
+      </svg>
+      <span class="logo-text"><b>Bab Rrayan</b><i>Admin</i></span>
+    </a>
+    <div class="adm-right">
+      <a href="index.html" class="link-arrow">View site <span aria-hidden="true">→</span></a>
+      <span id="who" class="who"></span>
+      <button id="signout" class="btn btn-line btn-sm" hidden>Sign out</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap adm-main">
+
+  <!-- Firebase not connected yet -->
+  <section id="setup" hidden>
+    <div class="notice">
+      <h1>Connect Firebase to start editing</h1>
+      <p>The admin needs your free Firebase project. Follow <b>SETUP.md</b> (about 10 minutes), then paste your config into <b>firebase-config.js</b> and reload this page.</p>
+      <p>Until then the public site runs in demo mode with sample content.</p>
+    </div>
+  </section>
+
+  <!-- Login -->
+  <section id="login" hidden>
+    <form class="form login" id="loginForm" novalidate>
+      <h1>Staff login</h1>
+      <div class="field"><label for="l-email">Email</label><input id="l-email" type="email" autocomplete="username" required></div>
+      <div class="field"><label for="l-pass">Password</label><input id="l-pass" type="password" autocomplete="current-password" required></div>
+      <button class="btn btn-saffron" type="submit">Sign in</button>
+      <p class="form-ok err" id="loginErr" role="alert"></p>
+    </form>
+  </section>
+
+  <!-- Dashboard -->
+  <section id="dash" hidden>
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" data-tab="announcements" aria-selected="true">Announcements</button>
+      <button class="tab" role="tab" data-tab="events" aria-selected="false">Events</button>
+      <button class="tab" role="tab" data-tab="files" aria-selected="false">Downloads</button>
+      <button class="tab" role="tab" data-tab="requests" aria-selected="false">Visit requests</button>
+      <button class="tab" role="tab" data-tab="content" aria-selected="false">Page content</button>
+    </div>
+    <div class="panel" id="p-announcements"></div>
+    <div class="panel" id="p-events" hidden></div>
+    <div class="panel" id="p-files" hidden></div>
+    <div class="panel" id="p-requests" hidden></div>
+    <div class="panel" id="p-content" hidden></div>
+  </section>
+</main>
+
+<div class="toast" id="toast" role="status"></div>
+
+<datalist id="cats"><option value="Forms"><option value="Timetables"><option value="Menus"><option value="Programs"><option value="Other"></datalist>
+
+<script src="env.js"></script>
+<script src="firebase-config.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+<script src="data.js"></script>
+<script src="admin.js"></script>
+</body>
+</html>

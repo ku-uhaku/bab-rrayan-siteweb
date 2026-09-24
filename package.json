@@ -1,0 +1,9 @@
+{
+  "name": "bab-rrayan-site",
+  "private": true,
+  "scripts": {
+    "env": "node build-env.js",
+    "start": "node build-env.js && npx serve",
+    "deploy": "node build-env.js && firebase deploy"
+  }
+}
