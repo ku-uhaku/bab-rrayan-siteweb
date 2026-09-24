@@ -6,18 +6,24 @@
 const fs = require('fs');
 const path = require('path');
 
-const envPath = path.join(__dirname, '.env');
-if (!fs.existsSync(envPath)) {
-  console.error('No .env file found. Copy .env.example to .env and fill it in.');
-  process.exit(1);
-}
+const KEYS = ['FIREBASE_API_KEY', 'FIREBASE_AUTH_DOMAIN', 'FIREBASE_PROJECT_ID', 'FIREBASE_STORAGE_BUCKET',
+  'FIREBASE_MESSAGING_SENDER_ID', 'FIREBASE_APP_ID', 'FIREBASE_MEASUREMENT_ID', 'WEB3FORMS_KEY'];
 
 const env = {};
-fs.readFileSync(envPath, 'utf8').split(/\r?\n/).forEach(function (line) {
-  const m = line.match(/^\s*([A-Z0-9_]+)\s*=\s*(.*?)\s*$/);
-  if (!m) return;
-  env[m[1]] = m[2].replace(/^(['"])(.*)\1$/, '$2');
-});
+const envPath = path.join(__dirname, '.env');
+if (fs.existsSync(envPath)) {
+  fs.readFileSync(envPath, 'utf8').split(/\r?\n/).forEach(function (line) {
+    const m = line.match(/^\s*([A-Z0-9_]+)\s*=\s*(.*?)\s*$/);
+    if (!m) return;
+    env[m[1]] = m[2].replace(/^(['"])(.*)\1$/, '$2');
+  });
+}
+/* On Netlify (or any host) there is no .env file: real environment variables are used instead. */
+KEYS.forEach(function (k) { if (process.env[k]) env[k] = process.env[k]; });
+if (!Object.keys(env).length) {
+  console.error('No .env file and no environment variables found. Copy .env.example to .env and fill it in.');
+  process.exit(1);
+}
 
 if (!env.FIREBASE_API_KEY || !env.FIREBASE_PROJECT_ID) {
   console.warn('Warning: FIREBASE_API_KEY / FIREBASE_PROJECT_ID missing in .env, the site will run in demo mode.');

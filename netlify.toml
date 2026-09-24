@@ -1,0 +1,9 @@
+# Netlify: builds env.js from the environment variables set in the Netlify dashboard.
+[build]
+  command = "node build-env.js"
+  publish = "."
+
+[build.environment]
+  # These keys are public by design (they end up in the website itself), so tell Netlify's
+  # secret scanner not to fail the deploy when it finds them in env.js.
+  SECRETS_SCAN_OMIT_KEYS = "FIREBASE_API_KEY,FIREBASE_AUTH_DOMAIN,FIREBASE_PROJECT_ID,FIREBASE_STORAGE_BUCKET,FIREBASE_MESSAGING_SENDER_ID,FIREBASE_APP_ID,FIREBASE_MEASUREMENT_ID,WEB3FORMS_KEY"

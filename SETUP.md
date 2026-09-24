@@ -65,6 +65,13 @@ All keys live in **`.env`** (Firebase keys and the email key). A browser cannot 
 - `.env` itself is never uploaded (Firebase Hosting ignores it) and is listed in `.gitignore`.
 - Be honest about what this protects: once the site is online these keys are visible to anyone who opens the page's source. That is normal for Firebase web keys. Your **Firestore rules** are what protect your data. Never put a password or a private key in `.env`.
 
+## Hosting on Netlify
+`.env` is not uploaded, so give Netlify the same values as environment variables. Because `netlify.toml` runs `node build-env.js` at build time, it creates `env.js` from them.
+1. Push the folder to GitHub (`.env` and `env.js` are git-ignored) and connect the repo in Netlify. Do **not** use drag-and-drop with `.env` inside the folder: it would be published.
+2. Netlify → Site configuration → **Environment variables**: add each line of `.env` (`FIREBASE_API_KEY`, `FIREBASE_AUTH_DOMAIN`, … `WEB3FORMS_KEY`).
+3. Netlify may suggest marking some as "secret". You can, or not. These keys end up in the public website either way, so it changes nothing about safety. `netlify.toml` already tells Netlify's scanner to allow them, so the deploy will not fail.
+4. In Firebase → Authentication → Settings → **Authorized domains**, add your Netlify domain, or admin login will not work.
+
 ## Languages
 The site is in Arabic by default, with a switch for French and English (saved in the visitor's browser). Share a French or English link with `?lang=fr` or `?lang=en` at the end of the address.
 
